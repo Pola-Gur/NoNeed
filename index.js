@@ -1,47 +1,43 @@
 const express = require('express');
 const cors = require('cors');
-const routes = require('./src/routes');
+const helmet = require('helmet');
+
+// Импорт маршрутов
+const authRouter = require('./src/routes/authRoutes');
+const eventsRouter = require('./src/routes/eventsRoutes');
+const profileRouter = require('./src/routes/profileRoutes');
+const helpRouter = require('./src/routes/helpRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-app.use(cors());
-app.use(express.json()); // Для обработки JSON в запросах
+// Настройка Helmet
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      fontSrc: ["'self'", 'https://fonts.googleapis.com'],
+      styleSrc: ["'self'", 'https://fonts.googleapis.com'],
+      // Добавьте другие директивы, если нужно
+    }
+  }
+}));
 
-app.use('/', routes);
+// Настройка CORS
+app.use(cors({
+  origin: 'http://localhost:3000'  // Разрешаем только этот источник
+}));
 
+// Настройки Express
+app.use(express.json());
+
+// Подключение маршрутов
+app.use('/auth', authRouter);
+app.use('/events', eventsRouter);
+app.use('/profile', profileRouter);
+app.use('/help', helpRouter);
+
+// Запуск сервера
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
 });
-
-
-
-// const express = require('express');
-// const app = express();
-// const cors = require('cors');
-// const sql = require('./app');
-
-
-// const PORT = process.env.PORT || 3001;
-
-// app.use(cors())
-
-
-// app.get('/', (req, res) => {
-//     res.send('Hello from new No Need server!')
-// })
-
-// app.get('/check-db', async (req, res) => {
-//     try {
-//         const result = await sql`select version()`;
-//         res.send(`Database connected: ${result[0].version}`);
-//     } catch (error) {
-//         console.error('Error', error);
-//         res.status(500).send('Error');
-//     }
-// });
-
-
-// app.listen(PORT, () => {
-//     console.log(`server listening on port ${PORT}`)
-// })

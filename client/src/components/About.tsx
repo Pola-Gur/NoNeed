@@ -1,11 +1,12 @@
+import React from 'react';
+
 const About = () => {
+  return (
+    <div>
+      <h1>About Us</h1>
+      <p>Here is some information about us...</p>
+    </div>
+  );
+};
 
-
-    return (
-        <>
-
-        </>
-    )
-}
-
-export default About
+export default About;
