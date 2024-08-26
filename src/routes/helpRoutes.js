@@ -4,7 +4,7 @@ const sql = require('../db');
 const router = express.Router();
 
 // Получение всех запросов о помощи
-router.get('/', async (req, res) => {
+router.get('/requests', async (req, res) => {
   try {
     const requests = await sql`SELECT * FROM help_requests ORDER BY date DESC`;
     res.json(requests);
@@ -15,7 +15,7 @@ router.get('/', async (req, res) => {
 });
 
 // Добавление запроса о помощи
-router.post('/', async (req, res) => {
+router.post('/requests', async (req, res) => {
   const { title, description, location, date, requesterId, field } = req.body;
 
   try {

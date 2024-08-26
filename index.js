@@ -1,6 +1,6 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-const helmet = require('helmet');
 
 // Импорт маршрутов
 const authRouter = require('./src/routes/authRoutes');
@@ -11,22 +11,15 @@ const helpRouter = require('./src/routes/helpRoutes');
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// Настройка Helmet
+app.use((req, res, next) => {
+  res.setHeader("Content-Security-Policy", "default-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com");
+  next();
+});
 
-// app.use(helmet({
-//   contentSecurityPolicy: {
-//     directives: {
-//       defaultSrc: ["'self'"],
-//       fontSrc: ["'self'"],
-//       styleSrc: ["'self'"],
-//       scriptSrc: ["'self'"],
-//     }
-//   }
-// }));
+app.get('/', (req, res) => {
+  res.send('Welcome to the API');
+});
 
-app.use(helmet({
-  contentSecurityPolicy: false // Отключите CSP для проверки
-}));
 
 // Настройка CORS
 app.use(cors({
@@ -45,4 +38,11 @@ app.use('/help', helpRouter);
 // Запуск сервера
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
+});
+
+
+// Обработчик для всех непойманных ошибок
+app.use((err, req, res, next) => {
+  console.error(err.stack);  // Выводит стек ошибки в консоль
+  res.status(500).send('Something broke!');
 });

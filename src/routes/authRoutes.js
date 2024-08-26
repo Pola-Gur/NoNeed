@@ -1,122 +1,65 @@
-const express = require('express');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const { body, validationResult } = require('express-validator');
-const sql = require('../db');
-
-const router = express.Router();
-const JWT_SECRET = process.env.JWT_SECRET || 'sod_sod';
+const express = require('express'); // Импортируем express
+const router = express.Router(); // Создаем экземпляр маршрутизатора
+const { body, validationResult } = require('express-validator'); // Импортируем валидаторы
+const bcrypt = require('bcrypt'); // Импортируем bcrypt
+const sql = require('../db'); // Импортируем библиотеку SQL
 
 // Регистрация пользователя
 router.post('/register',
   body('email').isEmail(),
   body('password').isLength({ min: 6 }),
-  body('name').notEmpty(),
   body('type').isIn(['volunteer', 'seeker', 'organization']),
   async (req, res) => {
+    console.log('Registration request body:', req.body);
+
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
+      console.log('Validation errors:', errors.array());
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { email, password, name, type } = req.body;
+    const { email, password, type } = req.body;
+    const hashedPassword = await bcrypt.hash(password, 10);
 
     try {
       let userExists;
       if (type === 'volunteer') {
         userExists = await sql`SELECT * FROM volunteers WHERE email = ${email}`;
-      } else {
-        userExists = await sql`SELECT * FROM seekers WHERE email = ${email}`;
-      }
-
-      if (userExists.length > 0) {
-        return res.status(400).json({ message: `Пользователь с таким email уже существует в ${type}s` });
-      }
-
-      const hashedPassword = await bcrypt.hash(password, 10);
-
-      if (type === 'volunteer') {
+        if (userExists.length > 0) {
+          return res.status(400).json({ message: 'Volunteer with this email already exists' });
+        }
         await sql`
-          INSERT INTO volunteers (email, password, first_name, last_name, created_at, updated_at)
-          VALUES (${email}, ${hashedPassword}, ${name}, 'Unknown LastName', NOW(), NOW())
+          INSERT INTO volunteers (email, password, created_at, updated_at)
+          VALUES (${email}, ${hashedPassword}, NOW(), NOW())
         `;
       } else if (type === 'organization') {
+        userExists = await sql`SELECT * FROM organizations WHERE email = ${email}`;
+        if (userExists.length > 0) {
+          return res.status(400).json({ message: 'Organization with this email already exists' });
+        }
         await sql`
-          INSERT INTO organizations (email, password, name, created_at, updated_at)
-          VALUES (${email}, ${hashedPassword}, ${name}, NOW(), NOW())
+          INSERT INTO organizations (email, password, created_at, updated_at)
+          VALUES (${email}, ${hashedPassword}, NOW(), NOW())
+        `;
+      } else if (type === 'seeker') {
+        userExists = await sql`SELECT * FROM seekers WHERE email = ${email}`;
+        if (userExists.length > 0) {
+          return res.status(400).json({ message: 'Seeker with this email already exists' });
+        }
+        await sql`
+          INSERT INTO seekers (email, password, created_at, updated_at)
+          VALUES (${email}, ${hashedPassword}, NOW(), NOW())
         `;
       } else {
-        await sql`
-          INSERT INTO seekers (type, name, email, password, created_at, updated_at)
-          VALUES (${type}, ${name}, ${email}, ${hashedPassword}, NOW(), NOW())
-        `;
+        return res.status(400).json({ message: 'Invalid user type' });
       }
 
-      res.status(201).json({ message: 'Пользователь успешно зарегистрирован' });
+      res.status(201).json({ message: 'User successfully registered' });
     } catch (error) {
-      console.error('Ошибка при регистрации пользователя:', error);
-      res.status(500).send('Ошибка сервера');
+      console.error('Registration error:', error);
+      res.status(500).send('Server error');
     }
   }
 );
 
-
-// Вход пользователя
-router.post('/login',
-  body('email').isEmail(),
-  body('password').exists(),
-  async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-
-    const { email, password } = req.body;
-
-    try {
-      const userInSeekers = await sql`SELECT * FROM seekers WHERE email = ${email}`;
-      const userInVolunteers = await sql`SELECT * FROM volunteers WHERE email = ${email}`;
-
-      let user = userInSeekers.length > 0 ? userInSeekers[0] : userInVolunteers.length > 0 ? userInVolunteers[0] : null;
-
-      if (!user) {
-        return res.status(400).json({ message: 'Неверный email или пароль' });
-      }
-
-      const validPassword = await bcrypt.compare(password, user.password);
-      if (!validPassword) {
-        return res.status(400).json({ message: 'Неверный email или пароль' });
-      }
-
-      const token = jwt.sign(
-        { userId: user.id, email: user.email },
-        JWT_SECRET,
-        { expiresIn: '1h' }
-      );
-
-      res.json({ token });
-    } catch (error) {
-      console.error('Ошибка при входе:', error);
-      res.status(500).send('Ошибка сервера');
-    }
-  }
-);
-
-// Защищённый маршрут
-router.get('/protected', (req, res) => {
-  const authHeader = req.headers['authorization'];
-  const token = authHeader && authHeader.split(' ')[1];
-
-  if (!token) {
-    return res.sendStatus(401);
-  }
-
-  jwt.verify(token, JWT_SECRET, (err, user) => {
-    if (err) {
-      return res.sendStatus(403);
-    }
-    res.json({ message: 'Вы получили доступ к защищённому маршруту', user });
-  });
-});
-
-module.exports = router;
+module.exports = router; // Экспортируем маршрутизатор

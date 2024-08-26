@@ -17,7 +17,7 @@ const Login = () => {
     setError('');
 
     try {
-      const response = await axios.post('http://localhost:3001/login', { email, password });
+      const response = await axios.post('http://localhost:3001/auth/login', { email, password });
       localStorage.setItem('token', response.data.token);
       setMessage('Login successful');
       navigate('/profile');
@@ -54,4 +54,3 @@ const Login = () => {
 };
 
 export default Login;
-
