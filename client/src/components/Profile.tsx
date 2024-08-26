@@ -79,6 +79,7 @@ const Profile = () => {
   return (
     <div>
       <h2>Profile</h2>
+      <p>You can change your information here</p>
       {loading && <p>Loading...</p>}
       {error && <p style={{ color: 'red' }}>{error}</p>}
       {user && (

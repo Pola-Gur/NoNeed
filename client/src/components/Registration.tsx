@@ -1,55 +1,44 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-const Registration = () => {
+const Register = () => {
   const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [name, setName] = useState('');
-  const [type, setType] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState('');
-  const [error, setError] = useState('');
+  const [type, setType] = useState('volunteer'); // Default type
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
-    setMessage('');
-    setError('');
-
     try {
-      await axios.post('http://localhost:3001/register', { email, name, type });
-      setMessage('Registration successful');
+      await axios.post('http://localhost:3001/auth/register', { email, password, name, type });
+      alert('Registration successful');
     } catch (error) {
-      console.error('Registration error', error);
-      if (axios.isAxiosError(error)) {
-        if (error.response) {
-          setError('Registration failed: ' + (error.response.data.message || 'Check your details.'));
-        } else if (error.request) {
-          setError('Network error. Please check your connection.');
-        } else {
-          setError('An error occurred. Please try again.');
-        }
-      } else {
-        setError('An error occurred. Please try again.');
-      }
-    } finally {
-      setLoading(false);
+      console.error(error);
+      alert('Registration failed');
     }
   };
 
   return (
-    <div>
-      <h2>Registration</h2>
-      <form onSubmit={handleSubmit}>
-        <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
-        <input type="text" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} />
-        <input type="text" placeholder="Type (organization or volunteer)" value={type} onChange={(e) => setType(e.target.value)} />
-        <button type="submit" disabled={loading}>{loading ? 'Loading...' : 'Register'}</button>
-      </form>
-      {message && <p style={{ color: 'green' }}>{message}</p>}
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-    </div>
+    <form onSubmit={handleSubmit}>
+      <label>Email:</label>
+      <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+
+      <label>Password:</label>
+      <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+
+      <label>Name:</label>
+      <input type="text" value={name} onChange={(e) => setName(e.target.value)} required />
+
+      <label>Type:</label>
+      <select value={type} onChange={(e) => setType(e.target.value)}>
+        <option value="volunteer">Volunteer</option>
+        <option value="seeker">Seeker</option>
+        <option value="organization">Organization</option>
+      </select>
+
+      <button type="submit">Register</button>
+    </form>
   );
 };
 
-export default Registration;
-
+export default Register;

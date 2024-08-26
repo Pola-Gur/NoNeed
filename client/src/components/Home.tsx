@@ -9,11 +9,12 @@ const Home = () => {
   const [date, setDate] = useState('');
   const [field, setField] = useState('');
   const [error, setError] = useState('');
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchRequests = async () => {
       try {
-        const response = await axios.get('http://localhost:3001');
+        const response = await axios.get('http://localhost:3001/help/requests'); // Убедись, что путь совпадает
         setRequests(response.data);
       } catch (error) {
         console.error('Error fetching help requests', error);
@@ -22,22 +23,33 @@ const Home = () => {
     };
 
     fetchRequests();
+
+    // Проверяем, авторизован ли пользователь
+    const token = localStorage.getItem('token');
+    setIsAuthenticated(!!token);
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       const token = localStorage.getItem('token');
-      await axios.post('http://localhost:3001', { title, description, location, date, requesterId: 1, field }, {
+      if (!token) {
+        setError('Для добавления запроса нужно войти в систему');
+        return;
+      }
+
+      await axios.post('http://localhost:3001/help/requests', { title, description, location, date, requesterId: 1, field }, {
         headers: { Authorization: `Bearer ${token}` }
       });
+
       setTitle('');
       setDescription('');
       setLocation('');
       setDate('');
       setField('');
-      // Обновить список запросов
-      const response = await axios.get('http://localhost:3001');
+
+      // Обновляем список запросов
+      const response = await axios.get('http://localhost:3001/help/requests');
       setRequests(response.data);
     } catch (error) {
       console.error('Error creating help request', error);
@@ -54,7 +66,13 @@ const Home = () => {
         <input type="text" placeholder="Location" value={location} onChange={(e) => setLocation(e.target.value)} />
         <input type="datetime-local" placeholder="Date" value={date} onChange={(e) => setDate(e.target.value)} />
         <input type="text" placeholder="Field" value={field} onChange={(e) => setField(e.target.value)} />
-        <button type="submit">Add Help Request</button>
+        <button 
+          type="submit" 
+          disabled={!isAuthenticated}
+          title={!isAuthenticated ? 'Для добавления запроса нужно войти в систему' : ''}
+        >
+          Add Help Request
+        </button>
       </form>
       {error && <p style={{ color: 'red' }}>{error}</p>}
       <h2>Current Help Requests</h2>
@@ -74,4 +92,3 @@ const Home = () => {
 };
 
 export default Home;
-

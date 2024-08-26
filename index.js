@@ -12,15 +12,20 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 // Настройка Helmet
+
+// app.use(helmet({
+//   contentSecurityPolicy: {
+//     directives: {
+//       defaultSrc: ["'self'"],
+//       fontSrc: ["'self'"],
+//       styleSrc: ["'self'"],
+//       scriptSrc: ["'self'"],
+//     }
+//   }
+// }));
+
 app.use(helmet({
-  contentSecurityPolicy: {
-    directives: {
-      defaultSrc: ["'self'"],
-      fontSrc: ["'self'", 'https://fonts.googleapis.com'],
-      styleSrc: ["'self'", 'https://fonts.googleapis.com'],
-      // Добавьте другие директивы, если нужно
-    }
-  }
+  contentSecurityPolicy: false // Отключите CSP для проверки
 }));
 
 // Настройка CORS

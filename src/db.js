@@ -15,11 +15,17 @@ const sql = postgres({
   },
 });
 
-// async function getPgVersion() {
-//   const result = await sql`select version()`;
-//   console.log(result);
-// }
+// Функция для проверки версии PostgreSQL
+async function getPgVersion() {
+  try {
+    const result = await sql`SELECT version()`;
+    console.log('PostgreSQL version:', result[0].version);
+  } catch (error) {
+    console.error('Error fetching PostgreSQL version:', error);
+  }
+}
 
-// getPgVersion();
+// Вызов функции для проверки версии
+getPgVersion();
 
 module.exports = sql;

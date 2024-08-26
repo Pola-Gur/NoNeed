@@ -6,6 +6,7 @@ import Login from './components/Login';
 import Profile from './components/Profile';
 import Events from './components/Events';
 import Registration from './components/Registration';
+import '../src/App.css'
 
 const App = () => {
   const isAuthenticated = Boolean(localStorage.getItem('token'));
@@ -15,10 +16,10 @@ const App = () => {
       <nav>
         <Link to="/">Home</Link>
         <Link to="/about">About</Link>
+        <Link to="/events">Events</Link>
         {isAuthenticated ? (
           <>
             <Link to="/profile">Profile</Link>
-            <Link to="/events">Events</Link>
             <button onClick={() => {
               localStorage.removeItem('token');
               window.location.href = '/login'; // Перенаправление на страницу входа
