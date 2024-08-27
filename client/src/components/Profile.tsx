@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { jwtDecode } from 'jwt-decode'; // Импортируем jwt-decode
+import { jwtDecode } from 'jwt-decode'; // Используем именованный экспорт
+
 
 const Profile = () => {
   const [user, setUser] = useState<any>(null);

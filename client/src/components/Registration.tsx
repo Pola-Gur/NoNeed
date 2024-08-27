@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 
 const Register = () => {
   const [email, setEmail] = useState('');
@@ -16,6 +16,7 @@ const Register = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) =>  {
     e.preventDefault();
+    
     // Create request data based on type
     const data = { email, password, type, firstName, lastName, city, description, address, phone, name };
 
@@ -24,7 +25,11 @@ const Register = () => {
       alert('Registration successful');
     } catch (error) {
       console.error('Registration error:', error);
-      setError('Registration failed');
+      if (axios.isAxiosError(error)) {
+        setError('Registration failed: ' + (error.response?.data?.message || 'Server error'));
+      } else {
+        setError('Registration failed: Unknown error');
+      }
     }
   };
 
