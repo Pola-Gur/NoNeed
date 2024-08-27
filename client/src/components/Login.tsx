@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext'; // Импортируйте useAuth из контекста
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [userType, setUserType] = useState('volunteer'); // Предположим, что по умолчанию это волонтёр
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const { login } = useAuth(); // Используйте метод login из контекста
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -17,20 +19,13 @@ const Login = () => {
     setError('');
 
     try {
-      const response = await axios.post('http://localhost:3001/auth/login', { email, password });
-      localStorage.setItem('token', response.data.token);
+      await login(email, password, userType); // Вызовите метод login с email, password и type
       setMessage('Login successful');
-      navigate('/profile');
+      navigate('/profile'); // Перенаправление на профиль
     } catch (error) {
       console.error('Login error', error);
-      if (axios.isAxiosError(error)) {
-        if (error.response) {
-          setError('Login failed: ' + (error.response.data.message || 'Check your credentials.'));
-        } else if (error.request) {
-          setError('Network error. Please check your connection.');
-        } else {
-          setError('An error occurred. Please try again.');
-        }
+      if (error instanceof Error) {
+        setError('Login failed: ' + error.message); // Выводим сообщение об ошибке
       } else {
         setError('An error occurred. Please try again.');
       }
@@ -43,8 +38,25 @@ const Login = () => {
     <div>
       <h2>Login</h2>
       <form onSubmit={handleSubmit}>
-        <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
-        <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+        <select value={userType} onChange={(e) => setUserType(e.target.value)}>
+          <option value="volunteer">Volunteer</option>
+          <option value="seeker">Seeker</option>
+          <option value="organization">Organization</option>
+        </select>
         <button type="submit" disabled={loading}>{loading ? 'Loading...' : 'Login'}</button>
       </form>
       {message && <p style={{ color: 'green' }}>{message}</p>}

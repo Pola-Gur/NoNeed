@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { jwtDecode } from 'jwt-decode'; // Импортируем jwt-decode
 
 const Profile = () => {
   const [user, setUser] = useState<any>(null);
@@ -18,13 +19,21 @@ const Profile = () => {
 
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('http://localhost:3001/profile', {
+        if (!token) {
+          throw new Error('No token found');
+        }
+
+        const decodedToken: any = jwtDecode(token); // Декодируем токен
+        const userId = decodedToken.id; // Получаем ID пользователя из токена
+
+        const response = await axios.get(`http://localhost:3001/profile/${userId}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
+
         setUser(response.data);
-        setName(response.data.name);
-        setEmail(response.data.email);
-        setType(response.data.type);
+        setName(response.data.first_name || ''); 
+        setEmail(response.data.email || '');
+        setType(response.data.type || '');
       } catch (error) {
         console.error('Error fetching user data', error);
         if (axios.isAxiosError(error)) {
@@ -54,7 +63,18 @@ const Profile = () => {
 
     try {
       const token = localStorage.getItem('token');
-      await axios.put('http://localhost:3001/profile', { name, email, type }, {
+      if (!token) {
+        throw new Error('No token found');
+      }
+
+      const decodedToken: any = jwtDecode(token); // Декодируем токен
+      const userId = decodedToken.id; // Получаем ID пользователя из токена
+
+      await axios.put(`http://localhost:3001/profile/${userId}`, {
+        name,
+        email,
+        type
+      }, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setMessage('Profile updated successfully');
@@ -84,9 +104,24 @@ const Profile = () => {
       {error && <p style={{ color: 'red' }}>{error}</p>}
       {user && (
         <form onSubmit={handleSubmit}>
-          <input type="text" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} />
-          <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
-          <input type="text" placeholder="Type (organization or volunteer)" value={type} onChange={(e) => setType(e.target.value)} />
+          <input
+            type="text"
+            placeholder="Name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <input
+            type="text"
+            placeholder="Type (organization or volunteer)"
+            value={type}
+            onChange={(e) => setType(e.target.value)}
+          />
           <button type="submit" disabled={loading}>{loading ? 'Loading...' : 'Update Profile'}</button>
         </form>
       )}
