@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { jwtDecode } from 'jwt-decode'; // Используем именованный экспорт
-
+import { jwtDecode } from 'jwt-decode';
 
 const Profile = () => {
   const [user, setUser] = useState<any>(null);
@@ -26,8 +25,9 @@ const Profile = () => {
 
         const decodedToken: any = jwtDecode(token); // Декодируем токен
         const userId = decodedToken.id; // Получаем ID пользователя из токена
+        const userType = decodedToken.type; // Получаем тип пользователя из токена
 
-        const response = await axios.get(`http://localhost:3001/profile/${userId}`, {
+        const response = await axios.get(`http://localhost:3001/profile/${userId}/${userType}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
 
@@ -70,8 +70,9 @@ const Profile = () => {
 
       const decodedToken: any = jwtDecode(token); // Декодируем токен
       const userId = decodedToken.id; // Получаем ID пользователя из токена
+      const userType = decodedToken.type; // Получаем тип пользователя из токена
 
-      await axios.put(`http://localhost:3001/profile/${userId}`, {
+      await axios.put(`http://localhost:3001/profile/${userId}/${userType}`, {
         name,
         email,
         type

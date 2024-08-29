@@ -4,14 +4,24 @@ const sql = require('../db');
 const router = express.Router();
 
 // Получение данных профиля пользователя
-router.get('/:userId', async (req, res) => {
-  const { userId } = req.params;
+router.get('/:userId/:type', async (req, res) => {
+  const { userId, type } = req.params;
 
-  // Логирование полученного userId
-  console.log('Fetching profile for userId:', userId);
+  // Логирование полученных параметров
+  console.log('Fetching profile for userId:', userId, 'type:', type);
 
   try {
-    const profile = await sql`SELECT * FROM seekers WHERE id = ${userId}`;
+    let profile;
+    if (type === 'volunteer') {
+      profile = await sql`SELECT * FROM volunteers WHERE id = ${userId}`;
+    } else if (type === 'seeker') {
+      profile = await sql`SELECT * FROM seekers WHERE id = ${userId}`;
+    } else if (type === 'organization') {
+      profile = await sql`SELECT * FROM organizations WHERE id = ${userId}`;
+    } else {
+      return res.status(400).json({ message: 'Invalid user type' });
+    }
+
     if (profile.length === 0) {
       return res.status(404).json({ message: 'Профиль не найден' });
     }
