@@ -24,7 +24,7 @@ app.get('/', (req, res) => {
 
 // Настройка CORS
 app.use(cors({
-  origin: 'http://localhost:3000'  // Разрешаем только этот источник
+  origin: 'https://noneed-9x5k.onrender.com'  // Разрешаем только этот источник
 }));
 
 // Настройки Express
