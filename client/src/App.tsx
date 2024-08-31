@@ -6,13 +6,14 @@ import Login from './components/Login';
 import Profile from './components/Profile';
 import Events from './components/Events';
 import Registration from './components/Registration';
-import { useAuth } from './context/AuthContext'; // Импортируйте useAuth
+import Navbar from './components/Navbar'; // Убедитесь, что импорт правильный
+import { useAuth } from './context/AuthContext';
 import '../src/App.css';
 
 const App = () => {
   return (
     <Router>
-      <NavBar />
+      <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
@@ -22,35 +23,6 @@ const App = () => {
         <Route path="/register" element={<Registration />} />
       </Routes>
     </Router>
-  );
-};
-
-const NavBar = () => {
-  const navigate = useNavigate();
-  const { isAuthenticated, logout } = useAuth(); // Используйте контекст для авторизации
-
-  const handleLogout = () => {
-    logout(); // Вызывайте метод logout из контекста
-    navigate('/login');
-  };
-
-  return (
-    <nav>
-      <Link to="/">Home</Link>
-      <Link to="/about">About</Link>
-      <Link to="/events">Events</Link>
-      {isAuthenticated ? (
-        <>
-          <Link to="/profile">Profile</Link>
-          <button onClick={handleLogout}>Logout</button>
-        </>
-      ) : (
-        <>
-          <Link to="/login">Login</Link>
-          <Link to="/register">Register</Link>
-        </>
-      )}
-    </nav>
   );
 };
 
