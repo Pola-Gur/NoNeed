@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
 
 // Импорт маршрутов
 const authRouter = require('./src/routes/authRoutes');
@@ -45,4 +46,12 @@ app.listen(PORT, () => {
 app.use((err, req, res, next) => {
   console.error(err.stack);  // Выводит стек ошибки в консоль
   res.status(500).send('Something broke!');
+});
+
+// Обслуживание статических файлов из папки build
+app.use(express.static(path.join(__dirname, 'client/build')));
+
+// Обработка маршрутов для всех остальных запросов
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
 });
