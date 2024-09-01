@@ -44,6 +44,7 @@ const Register = () => {
         required
         autoComplete="email"
       />
+      <p></p>
 
       <label>Password:</label>
       <input
@@ -54,14 +55,14 @@ const Register = () => {
         required
         autoComplete="current-password"
       />
-
+      <p></p>
       <label>Type:</label>
       <select value={type} onChange={(e) => setType(e.target.value)}>
         <option value="volunteer">Volunteer</option>
         <option value="seeker">Seeker</option>
         <option value="organization">Organization</option>
       </select>
-
+      <p></p>
       {/* Conditionally rendered fields based on type */}
       {type === 'volunteer' && (
         <>
@@ -73,7 +74,7 @@ const Register = () => {
             placeholder="First Name"
             required
           />
-          
+          <p></p>
           <label>Last Name:</label>
           <input
             type="text"
@@ -95,7 +96,7 @@ const Register = () => {
             placeholder="First Name"
             required
           />
-          
+          <p></p>
           <label>Last Name:</label>
           <input
             type="text"
@@ -104,7 +105,7 @@ const Register = () => {
             placeholder="Last Name"
             required
           />
-          
+          <p></p>
           <label>City:</label>
           <input
             type="text"
@@ -112,14 +113,14 @@ const Register = () => {
             onChange={(e) => setCity(e.target.value)}
             placeholder="City"
           />
-
+          <p></p>
           <label>Description:</label>
           <textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             placeholder="Description"
           />
-          
+          <p></p>
           <label>Address:</label>
           <input
             type="text"
@@ -127,7 +128,7 @@ const Register = () => {
             onChange={(e) => setAddress(e.target.value)}
             placeholder="Address"
           />
-          
+          <p></p>
           <label>Phone:</label>
           <input
             type="text"
@@ -148,7 +149,7 @@ const Register = () => {
             placeholder="Organization Name"
             required
           />
-          
+          <p></p>
           <label>City:</label>
           <input
             type="text"
@@ -156,7 +157,7 @@ const Register = () => {
             onChange={(e) => setCity(e.target.value)}
             placeholder="City"
           />
-          
+          <p></p>
           <label>Phone:</label>
           <input
             type="text"
@@ -164,7 +165,7 @@ const Register = () => {
             onChange={(e) => setPhone(e.target.value)}
             placeholder="Phone"
           />
-          
+          <p></p>
           <label>Description:</label>
           <textarea
             value={description}
@@ -173,7 +174,7 @@ const Register = () => {
           />
         </>
       )}
-
+      <p></p>
       <button type="submit">Register</button>
       {error && <p style={{ color: 'red' }}>{error}</p>}
     </form>

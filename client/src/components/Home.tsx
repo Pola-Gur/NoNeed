@@ -61,11 +61,11 @@ const Home = () => {
     <div>
       <h1>Welcome to Home Page</h1>
       <form onSubmit={handleSubmit}>
-        <input type="text" placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} />
-        <textarea placeholder="Description" value={description} onChange={(e) => setDescription(e.target.value)} />
-        <input type="text" placeholder="Location" value={location} onChange={(e) => setLocation(e.target.value)} />
-        <input type="datetime-local" placeholder="Date" value={date} onChange={(e) => setDate(e.target.value)} />
-        <input type="text" placeholder="Field" value={field} onChange={(e) => setField(e.target.value)} />
+        <input type="text" placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} /><p></p>
+        <textarea placeholder="Description" value={description} onChange={(e) => setDescription(e.target.value)} /><p></p>
+        <input type="text" placeholder="Location" value={location} onChange={(e) => setLocation(e.target.value)} /><p></p>
+        <input type="datetime-local" placeholder="Date" value={date} onChange={(e) => setDate(e.target.value)} /><p></p>
+        <input type="text" placeholder="Field" value={field} onChange={(e) => setField(e.target.value)} /><p></p>
         <button 
           type="submit" 
           disabled={!isAuthenticated}
