@@ -20,7 +20,7 @@ const Register = () => {
     const data = { email, password, type, firstName, lastName, city, description, address, phone, name };
 
     try {
-      await axios.post('http://localhost:3001/auth/register', data);
+      await axios.post('https://noneed-9x5k.onrender.com/auth/register', data);
       alert('Registration successful');
     } catch (error) {
       console.error('Registration error:', error);

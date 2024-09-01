@@ -78,7 +78,7 @@ const Profile: React.FC = () => {
         const userId = decodedToken.id;
         const userType = decodedToken.type;
 
-        const response = await axios.get(`http://localhost:3001/profile/${userId}/${userType}`, {
+        const response = await axios.get(`https://noneed-9x5k.onrender.com/profile/${userId}/${userType}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
 
@@ -110,7 +110,7 @@ const Profile: React.FC = () => {
         throw new Error('No token found');
       }
 
-      const response = await axios.get(`http://localhost:3001/validate-email/${encodeURIComponent(email)}`, {
+      const response = await axios.get(`https://noneed-9x5k.onrender.com/validate-email/${encodeURIComponent(email)}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
 
@@ -147,7 +147,7 @@ const Profile: React.FC = () => {
       const userId = decodedToken.id;
       const userType = decodedToken.type;
 
-      await axios.put(`http://localhost:3001/profile/${userId}/${userType}`, formData, {
+      await axios.put(`http://https://noneed-9x5k.onrender.com/profile/${userId}/${userType}`, formData, {
         headers: { Authorization: `Bearer ${token}` }
       });
 

@@ -12,7 +12,7 @@ const Events: React.FC = () => {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await axios.get('http://localhost:3001/events');
+        const response = await axios.get('https://noneed-9x5k.onrender.com/events');
         setEvents(response.data);
       } catch (error) {
         console.error('Error while receiving events', error);
@@ -27,7 +27,7 @@ const Events: React.FC = () => {
     e.preventDefault();
     try {
       const token = localStorage.getItem('token');
-      await axios.post('http://localhost:3001/events', { title, description, date, type }, {
+      await axios.post('https://noneed-9x5k.onrender.com/events', { title, description, date, type }, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setTitle('');
@@ -35,7 +35,7 @@ const Events: React.FC = () => {
       setDate('');
       setType('');
 
-      const response = await axios.get('http://localhost:3001/events');
+      const response = await axios.get('https://noneed-9x5k.onrender.com/events');
       setEvents(response.data);
     } catch (error) {
       console.error('Error creating event', error);

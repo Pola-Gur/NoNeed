@@ -25,7 +25,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const login = async (email: string, password: string, type: string) => {
     try {
-      const response = await fetch('http://localhost:3001/auth/login', { // Убедитесь, что URL правильный
+      const response = await fetch('https://noneed-9x5k.onrender.com/auth/login', { // Убедитесь, что URL правильный
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password, type })

@@ -21,6 +21,14 @@ app.get('/', (req, res) => {
   res.send('Welcome to the API');
 });
 
+app.use((req, res, next) => {
+  res.setHeader(
+    'Content-Security-Policy',
+    "default-src 'self'; connect-src 'self' https://noneed-9x5k.onrender.com; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com;"
+  );
+  next();
+});
+
 
 app.use(cors({
   origin: 'https://noneed-9x5k.onrender.com'  // Разрешаем только этот источник

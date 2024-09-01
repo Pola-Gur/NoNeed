@@ -14,7 +14,7 @@ const Home = () => {
   useEffect(() => {
     const fetchRequests = async () => {
       try {
-        const response = await axios.get('http://localhost:3001/help/requests'); 
+        const response = await axios.get('https://noneed-9x5k.onrender.com/help/requests'); 
         setRequests(response.data);
       } catch (error) {
         console.error('Error fetching help requests', error);
@@ -38,7 +38,7 @@ const Home = () => {
         return;
       }
 
-      await axios.post('http://localhost:3001/help/requests', { title, description, location, date, requesterId: 1, field }, {
+      await axios.post('https://noneed-9x5k.onrender.com/help/requests', { title, description, location, date, requesterId: 1, field }, {
         headers: { Authorization: `Bearer ${token}` }
       });
 
@@ -49,7 +49,7 @@ const Home = () => {
       setField('');
 
 
-      const response = await axios.get('http://localhost:3001/help/requests');
+      const response = await axios.get('https://noneed-9x5k.onrender.com/help/requests');
       setRequests(response.data);
     } catch (error) {
       console.error('Error creating help request', error);
