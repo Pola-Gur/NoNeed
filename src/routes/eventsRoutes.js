@@ -3,7 +3,6 @@ const sql = require('../db');
 
 const router = express.Router();
 
-// Создание события
 router.post('/',
   async (req, res) => {
     const { title, description, type, date } = req.body;
@@ -21,7 +20,7 @@ router.post('/',
   }
 );
 
-// Получение списка событий
+
 router.get('/',
   async (req, res) => {
     try {
@@ -34,7 +33,6 @@ router.get('/',
   }
 );
 
-// Присоединение волонтера к событию
 router.post('/join/volunteer',
   async (req, res) => {
     const { volunteerId, eventId } = req.body;
@@ -52,7 +50,7 @@ router.post('/join/volunteer',
   }
 );
 
-// Присоединение организации к событию
+
 router.post('/join/organization',
   async (req, res) => {
     const { organizationId, eventId } = req.body;

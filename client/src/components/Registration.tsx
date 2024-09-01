@@ -4,7 +4,7 @@ import axios, { AxiosError } from 'axios';
 const Register = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [type, setType] = useState('volunteer'); // Default type
+  const [type, setType] = useState('volunteer'); 
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [city, setCity] = useState('');
@@ -17,7 +17,6 @@ const Register = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) =>  {
     e.preventDefault();
     
-    // Create request data based on type
     const data = { email, password, type, firstName, lastName, city, description, address, phone, name };
 
     try {
@@ -144,7 +143,7 @@ const Register = () => {
           <label>Organization Name:</label>
           <input
             type="text"
-            value={name}  // Changed from `firstName` to `name` for organization
+            value={name}  
             onChange={(e) => setName(e.target.value)}
             placeholder="Organization Name"
             required

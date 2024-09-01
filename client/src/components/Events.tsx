@@ -15,8 +15,8 @@ const Events: React.FC = () => {
         const response = await axios.get('http://localhost:3001/events');
         setEvents(response.data);
       } catch (error) {
-        console.error('Ошибка при получении событий', error);
-        setError('Ошибка при получении событий');
+        console.error('Error while receiving events', error);
+        setError('Error while receiving events');
       }
     };
 
@@ -34,12 +34,12 @@ const Events: React.FC = () => {
       setDescription('');
       setDate('');
       setType('');
-      // Обновление списка событий после добавления нового
+
       const response = await axios.get('http://localhost:3001/events');
       setEvents(response.data);
     } catch (error) {
-      console.error('Ошибка при создании события', error);
-      setError('Ошибка при создании события');
+      console.error('Error creating event', error);
+      setError('Error creating event');
     }
   };
 

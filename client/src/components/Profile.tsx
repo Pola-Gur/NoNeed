@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { jwtDecode } from 'jwt-decode'; // Исправленный импорт
+import { jwtDecode } from 'jwt-decode'; 
 
-// Определите интерфейс для formData
 interface FormData {
   [key: string]: string | undefined;
 }
@@ -13,7 +12,6 @@ interface User {
   [key: string]: any;
 }
 
-// Определите интерфейс для поля формы
 interface Field {
   name: string;
   placeholder: string;
@@ -28,7 +26,7 @@ const Profile: React.FC = () => {
   const [error, setError] = useState('');
   const [emailError, setEmailError] = useState('');
 
-  // Получаем поля формы в зависимости от типа пользователя
+  
   const getFieldsForUserType = (type: string): Field[] => {
     switch (type) {
       case 'volunteer':
@@ -62,7 +60,7 @@ const Profile: React.FC = () => {
     }
   };
 
-  // Получение данных пользователя при загрузке компонента
+  
   useEffect(() => {
     const fetchUser = async () => {
       setLoading(true);
@@ -84,7 +82,6 @@ const Profile: React.FC = () => {
           headers: { Authorization: `Bearer ${token}` }
         });
 
-        // Проверьте, что данные приходят правильно
         console.log('Server response:', response.data);
 
         setUser(response.data);
@@ -100,13 +97,12 @@ const Profile: React.FC = () => {
     fetchUser();
   }, []);
 
-  // Обработка изменений в форме
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prevData => ({ ...prevData, [name]: value }));
   };
 
-  // Валидация email
   const validateEmail = async (email: string) => {
     try {
       const token = localStorage.getItem('token');
@@ -125,7 +121,6 @@ const Profile: React.FC = () => {
     }
   };
 
-  // Обработка отправки формы
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -165,7 +160,6 @@ const Profile: React.FC = () => {
     }
   };
 
-  // Отображение полей формы в зависимости от типа пользователя
   const renderFormFields = () => {
     if (!user) return null;
 

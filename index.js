@@ -3,7 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 
-// Импорт маршрутов
+
 const authRouter = require('./src/routes/authRoutes');
 const eventsRouter = require('./src/routes/eventsRoutes');
 const profileRouter = require('./src/routes/profileRoutes');
@@ -22,36 +22,35 @@ app.get('/', (req, res) => {
 });
 
 
-// Настройка CORS
 app.use(cors({
   origin: 'https://noneed-9x5k.onrender.com'  // Разрешаем только этот источник
 }));
 
-// Настройки Express
+
 app.use(express.json());
 
-// Подключение маршрутов
+
 app.use('/auth', authRouter);
 app.use('/events', eventsRouter);
 app.use('/profile', profileRouter);
 app.use('/help', helpRouter);
 
-// Запуск сервера
+
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
 });
 
 
-// Обработчик для всех непойманных ошибок
+
 app.use((err, req, res, next) => {
-  console.error(err.stack);  // Выводит стек ошибки в консоль
+  console.error(err.stack);  
   res.status(500).send('Something broke!');
 });
 
-// Обслуживание статических файлов из папки build
+
 app.use(express.static(path.join(__dirname, 'client/build')));
 
-// Обработка маршрутов для всех остальных запросов
+
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
 });

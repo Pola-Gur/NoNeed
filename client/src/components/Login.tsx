@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext'; // Импортируйте useAuth из контекста
+import { useAuth } from '../context/AuthContext'; 
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [userType, setUserType] = useState('volunteer'); // Предположим, что по умолчанию это волонтёр
+  const [userType, setUserType] = useState('volunteer'); 
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
-  const { login } = useAuth(); // Используйте метод login из контекста
+  const { login } = useAuth(); 
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -19,13 +19,13 @@ const Login = () => {
     setError('');
 
     try {
-      await login(email, password, userType); // Вызовите метод login с email, password и type
+      await login(email, password, userType); 
       setMessage('Login successful');
-      navigate('/profile'); // Перенаправление на профиль
+      navigate('/profile'); 
     } catch (error) {
       console.error('Login error', error);
       if (error instanceof Error) {
-        setError('Login failed: ' + error.message); // Выводим сообщение об ошибке
+        setError('Login failed: ' + error.message); 
       } else {
         setError('An error occurred. Please try again.');
       }

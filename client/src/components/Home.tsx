@@ -14,17 +14,17 @@ const Home = () => {
   useEffect(() => {
     const fetchRequests = async () => {
       try {
-        const response = await axios.get('http://localhost:3001/help/requests'); // Убедись, что путь совпадает
+        const response = await axios.get('http://localhost:3001/help/requests'); 
         setRequests(response.data);
       } catch (error) {
         console.error('Error fetching help requests', error);
-        setError('Ошибка при получении запросов о помощи');
+        setError('Error receiving help requests');
       }
     };
 
     fetchRequests();
 
-    // Проверяем, авторизован ли пользователь
+
     const token = localStorage.getItem('token');
     setIsAuthenticated(!!token);
   }, []);
@@ -34,7 +34,7 @@ const Home = () => {
     try {
       const token = localStorage.getItem('token');
       if (!token) {
-        setError('Для добавления запроса нужно войти в систему');
+        setError('To add a request you need to log in');
         return;
       }
 
@@ -48,12 +48,12 @@ const Home = () => {
       setDate('');
       setField('');
 
-      // Обновляем список запросов
+
       const response = await axios.get('http://localhost:3001/help/requests');
       setRequests(response.data);
     } catch (error) {
       console.error('Error creating help request', error);
-      setError('Ошибка при создании запроса о помощи');
+      setError('Error creating help request');
     }
   };
 
@@ -69,7 +69,7 @@ const Home = () => {
         <button 
           type="submit" 
           disabled={!isAuthenticated}
-          title={!isAuthenticated ? 'Для добавления запроса нужно войти в систему' : ''}
+          title={!isAuthenticated ? 'To add a request you need to log in' : ''}
         >
           Add Help Request
         </button>

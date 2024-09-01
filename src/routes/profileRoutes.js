@@ -1,8 +1,7 @@
 const express = require('express');
-const sql = require('../db'); // Импорт соединения с базой данных
-const router = express.Router();
+const sql = require('../db'); const router = express.Router();
 
-// Получение данных профиля пользователя
+
 router.get('/:userId/:type', async (req, res) => {
   const { userId, type } = req.params;
 
@@ -28,7 +27,7 @@ router.get('/:userId/:type', async (req, res) => {
   }
 });
 
-// Обновление данных профиля пользователя
+
 router.put('/:userId/:type', async (req, res) => {
   const { userId, type } = req.params;
   const updateData = req.body;

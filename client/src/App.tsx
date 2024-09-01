@@ -6,7 +6,7 @@ import Login from './components/Login';
 import Profile from './components/Profile';
 import Events from './components/Events';
 import Registration from './components/Registration';
-import Navbar from './components/Navbar'; // Убедитесь, что импорт правильный
+import Navbar from './components/Navbar'; 
 import { useAuth } from './context/AuthContext';
 import '../src/App.css';
 
