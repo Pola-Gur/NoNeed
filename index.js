@@ -54,3 +54,14 @@ app.use(express.static(path.join(__dirname, 'client/build')));
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
 });
+
+// Пример добавления маршрута для проверки соединения с базой данных
+app.get('/api/check-db', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT 1 + 1 AS result');
+    res.status(200).json({ success: true, result: result.rows[0].result });
+  } catch (err) {
+    console.error('Ошибка при проверке соединения с базой данных:', err);
+    res.status(500).json({ success: false, error: 'Ошибка соединения с базой данных' });
+  }
+});
