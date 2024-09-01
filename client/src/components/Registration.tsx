@@ -43,7 +43,6 @@ const Register = () => {
         required
         autoComplete="email"
       />
-      <p></p>
 
       <label>Password:</label>
       <input
@@ -54,7 +53,7 @@ const Register = () => {
         required
         autoComplete="current-password"
       />
-      <p></p>
+
       <label>Type:</label>
       <select value={type} onChange={(e) => setType(e.target.value)}>
         <option value="volunteer">Volunteer</option>
@@ -73,7 +72,7 @@ const Register = () => {
             placeholder="First Name"
             required
           />
-          <p></p>
+
           <label>Last Name:</label>
           <input
             type="text"
@@ -95,7 +94,7 @@ const Register = () => {
             placeholder="First Name"
             required
           />
-          <p></p>
+
           <label>Last Name:</label>
           <input
             type="text"
@@ -104,7 +103,7 @@ const Register = () => {
             placeholder="Last Name"
             required
           />
-          <p></p>
+
           <label>City:</label>
           <input
             type="text"
@@ -127,7 +126,7 @@ const Register = () => {
             onChange={(e) => setAddress(e.target.value)}
             placeholder="Address"
           />
-          <p></p>
+
           <label>Phone:</label>
           <input
             type="text"
@@ -148,7 +147,7 @@ const Register = () => {
             placeholder="Organization Name"
             required
           />
-          <p></p>
+
           <label>City:</label>
           <input
             type="text"
@@ -156,7 +155,7 @@ const Register = () => {
             onChange={(e) => setCity(e.target.value)}
             placeholder="City"
           />
-          <p></p>
+
           <label>Phone:</label>
           <input
             type="text"

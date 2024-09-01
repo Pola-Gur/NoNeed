@@ -27,6 +27,7 @@ function Navbar() {
           <Link to="/register">Register</Link>
         </>
       )}
+      <p></p>
     </nav>
   );
 }
