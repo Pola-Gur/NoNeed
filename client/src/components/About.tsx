@@ -8,6 +8,7 @@ const About = () => {
       <p>The service was created to connect those who need help with those who are ready to help.
       In addition, you can create entertaining and educational events to improve your networking and knowledge.
       Register now and start multiplying good!</p>
+      <img src="../../public/about.jpg" alt="" />
     </div>
   );
 };
